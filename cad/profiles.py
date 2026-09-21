@@ -22,6 +22,7 @@ REPO = Path(__file__).resolve().parent.parent
 STL_DIR = REPO / "stl"
 RHINO_DIR = REPO / "rhino"
 CIRCLE_SEGMENTS = 64  # STL only; the .3dm gets true circles
+FUSE_EPS = 0.001      # STL only; see to_mesh
 
 
 @dataclass
@@ -39,6 +40,10 @@ class Slab:
     z1: float
     cutouts: list = field(default_factory=list)  # polygons, like outline
     holes: list = field(default_factory=list)    # Hole
+    # "z": outline is (x, y), extruded z0 → z1 (the usual case).
+    # "x": outline is (y, z), extruded x0 → x1 (passed as z0, z1). For walls
+    # that slope in Y as they go in Z. No cutouts or holes.
+    axis: str = "z"
 
 
 @dataclass
@@ -70,6 +75,22 @@ def _circle(h, z):
     return r.Circle(r.Point3d(h.x, h.y, z), h.d / 2).ToNurbsCurve()
 
 
+def _x_extrusion(s):
+    assert not s.cutouts and not s.holes, "axis='x' slabs take no cutouts or holes"
+    pts = list(s.outline)
+    for attempt in range(2):
+        curve = r.PolylineCurve([r.Point3d(s.z0, y, z) for y, z in pts + [pts[0]]])
+        e = r.Extrusion.Create(curve, s.z1 - s.z0, True)
+        b = e.GetBoundingBox()
+        if abs(b.Min.X - s.z0) < 1e-6 and abs(b.Max.X - s.z1) < 1e-6:
+            break
+        pts = pts[::-1]  # wrong way round: the curve's normal sets the direction
+    else:
+        raise ValueError(f"could not extrude {s.layer} along +X")
+    assert e.IsValid and e.IsSolid, f"bad extrusion on {s.layer}"
+    return e
+
+
 def write_3dm(items, name, source=""):
     f = r.File3dm()
     f.Settings.ModelUnitSystem = r.UnitSystem.Millimeters
@@ -87,6 +108,9 @@ def write_3dm(items, name, source=""):
             attrs.SetUserString("source", source)
         if isinstance(it, Curve):
             f.Objects.AddCurve(_polyline(it.outline, it.z), attrs)
+            continue
+        if it.axis == "x":
+            f.Objects.AddExtrusion(_x_extrusion(it), attrs)
             continue
         e = r.Extrusion.Create(_polyline(it.outline, it.z0), it.z1 - it.z0, True)
         # Inner profiles go in the extrusion's local 2D frame, whose origin is
@@ -125,7 +149,16 @@ def to_mesh(items):
         loops = [_ccw(s.outline)] + [_ccw(c)[::-1] for c in s.cutouts] \
             + [_ccw(_circle_pts(h))[::-1] for h in s.holes]
         cs = CrossSection(loops, FillRule.EvenOdd)
-        solid += cs.extrude(s.z1 - s.z0).translate([0, 0, s.z0])
+        z0, z1 = s.z0, s.z1
+        if s.axis == "x":
+            # An X slab's end faces usually lie in the same plane as another
+            # part's faces, and exactly coplanar faces break the union (STL not
+            # watertight). Pull the ends in 1 µm; the .3dm stays exact.
+            z0, z1 = z0 + FUSE_EPS, z1 - FUSE_EPS
+        body = cs.extrude(z1 - z0).translate([0, 0, z0])
+        if s.axis == "x":  # local (u, v, w) → world (x, y, z) = (w, u, v)
+            body = body.transform([[0, 0, 1, 0], [1, 0, 0, 0], [0, 1, 0, 0]])
+        solid += body
     m = solid.to_mesh()
     return trimesh.Trimesh(vertices=m.vert_properties[:, :3], faces=m.tri_verts)
 

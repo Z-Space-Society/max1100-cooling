@@ -66,6 +66,11 @@ before an STL is committed.
 - rhino3dm gotcha: `Extrusion.AddInnerProfile` takes curves in the
   extrusion's local frame (origin at the outline's first point, z = 0).
   `profiles.write_3dm` handles this, so don't pass world coordinates.
+- `Slab(axis="x")` extrudes a (Y, Z) side section across X, for walls that
+  slope as they go into the card (the scoop). In the STL its ends are pulled
+  in 1 µm (`FUSE_EPS`), because faces exactly coplanar with another part's
+  faces break the union. Its Rhino bounding box is loose; use `Profile3d`
+  points to check it.
 - rhino3dm can't do booleans or meshing. Build parts from extruded profiles
   (`Slab`). If a part ever needs something that isn't an extrusion, raise it
   before reaching for another approach.

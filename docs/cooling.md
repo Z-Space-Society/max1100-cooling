@@ -36,6 +36,10 @@ From datasheet 817799.
     card, so the bracket clamps the adapter on.
   - The power notch clears the 12V-2x6, outside the tube.
   - Bore 73 × 19.
+  - V3 adds a scoop: the PCB-side wall carries on 10 past the tube's end,
+    angled 5 toward the PCB side. It widens the air stream onto the fins on
+    that side and cuts the air leaking back out through the power notch. It
+    goes in by hooking it over the power plug and sliding it home.
 - **The same adapter serves 1 or 4 cards.** Only the fan side changes:
   - Salmon gets a flare from the adapter to one fan.
   - The quad gets a plenum feeding four adapters.
@@ -105,6 +109,8 @@ flange down on the bed.
   - the bracket holes line up with the bracket mounting holes
   - the power notch clears the plug and its latch
   - the flange sits flat on the shroud end plane
+- [ ] V3 scoop: does it hook in past the power plug and clear the headers in
+      the bay? Length 10 or 8, and how much drop
 - [ ] Bracket screw thread (M2.5 or M3), and whether Ø3.0 holes pass it
 - [ ] Read the Figure 6-4 impedance curve
 - [ ] Fan size: 120 or 140

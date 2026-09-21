@@ -41,6 +41,11 @@ class CardAdapter:
     # ---- Bracket holes (over the card's bracket mounting holes) ----
     bracket_hole_d: float = 3.0
     bracket_holes: tuple = ((-3.0, 17.0), (-3.0, -2.0))  # Katie's: -2.9947, rounded
+    # ---- Scoop: the PCB-side wall carries on past the tube's end, angled ----
+    # toward the PCB side, so the air reaches the fins on that side. Goes in by
+    # hooking it over the power plug and sliding it home. 0 = no scoop.
+    scoop_len: float = 0.0      # extra depth past the tube's end
+    scoop_drop: float = 0.0     # how far it angles toward the PCB side over that
     # ---- Reference only ----
     fan: float = 120.0          # fan outline, centered on the tube
 
@@ -53,6 +58,12 @@ V2 = replace(
     bracket_holes=((-4.0, 18.0), (-4.0, -1.0)),  # 1 toward the finger edge, 1 toward the shroud
     power_notch_w=24.0,             # 25 → 24; finger-side edge moves 1 toward the top edge
 )                                   # flange follows the tube: 95 × 38
+
+V3 = replace(
+    V2,
+    scoop_len=10.0,                 # PCB-side wall goes 10 deeper (26 total); could be 8
+    scoop_drop=5.0,                 # angled 5 toward the PCB side (~27°), a first guess
+)
 
 
 def build(p):
@@ -68,14 +79,22 @@ def build(p):
 
     ox, oy = ORIGIN
     o = lambda pts: offset(pts, ox, oy)
-    return [
+    parts = [
         Slab("Tube", o(rect(0, 0, w, h)), -p.insert, 0, cutouts=[o(bore)]),
         Slab("Flange", o(flange), 0, p.flange_t, cutouts=[o(bore)],
              holes=[Hole(x + ox, y + oy, p.bracket_hole_d) for x, y in p.bracket_holes]),
         Curve("Fan connector", o(rect(cx - s, cy - s, cx + s, cy + s))),
     ]
+    if p.scoop_len:
+        # Side section (Y, Z) of the PCB-side wall, run across the tube's full
+        # width. A tab 1 up into the tube's wall fuses the two.
+        z0, z1, t, d = -p.insert, -p.insert - p.scoop_len, p.wall, p.scoop_drop
+        side = [(0, z0 + 1), (t, z0 + 1), (t, z0), (t - d, z1), (-d, z1), (0, z0)]
+        parts.append(Slab("Scoop", [(y + oy, z) for y, z in side], ox, ox + w, axis="x"))
+    return parts
 
 
 if __name__ == "__main__":
-    export(build(V2), "max1100-card-adapter-v2",
-           source="cad/card_adapter.py V2 (generated; edit the script, not this file)")
+    for n, p in [("v2", V2), ("v3", V3)]:
+        export(build(p), f"max1100-card-adapter-{n}",
+               source=f"cad/card_adapter.py {n.upper()} (generated; edit the script, not this file)")
