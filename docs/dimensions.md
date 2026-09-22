@@ -50,6 +50,11 @@ bracket holes sit over them.
 - The plug goes in axially and the cable exits straight out past the tail.
   Allow about 35 of straight cable before any bend.
 - Check the latch can still be reached with the card adapter fitted.
+- The notch is an **open cutout, not a seal**: there is a large unsealed gap
+  around the plug (V4 on the card, 2026-09-22). It doesn't open into the bore
+  — the adapter tube's wall separates them — but it does let air out of the
+  bay before it reaches the fins. Not yet measured, and not yet known to
+  matter.
 
 ## Inside the bay
 
@@ -59,6 +64,18 @@ bracket holes sit over them.
   V4 stops the scoop 4 short of the top-edge end.
 - The fin face is 37 to 39 in, so there's open bay in front of it.
 
+## Quad column
+
+Four cards in the RackChoice 4U. See [cooling](cooling.md#column-geometry) for
+the derived bore positions.
+
+| | |
+|---|---|
+| Slot pitch | 40.64 (PCIe, 2 × 20.32) |
+| Flange thickness vs pitch | 38 against 40.64, so **2.64 between adjacent flanges** |
+| Gap between adjacent bores | 21.6, past the flange (Z > 2) |
+| Extension bracket plate | Occupies that 21.6 from Z = 0 to +45, one per card |
+
 ## Not yet measured
 
 | | |
@@ -66,6 +83,8 @@ bracket holes sit over them.
 | Fin throat, width × height | Estimated from photos: 15–20 × ~68 |
 | Fin count / fin pitch | |
 | Tallest header above the PCB | |
+| Bore centre above the chassis floor, card installed | Estimated 52–70. Decides whether the quad's panel 120s sit on the floor or need a riser |
+| Power notch gap around the plug | Visibly large (photo, 2026-09-22); never calipered |
 
 ## Other
 

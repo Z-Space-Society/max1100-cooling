@@ -110,16 +110,32 @@ model, adjusted here.
 
 | Term | Means |
 |---|---|
-| **Card adapter** | The per-card printed piece (`cad/card_adapter.py`): tube + flange. One per card; the quad reuses it. Not "shroud": that's the GPU's own cover. |
-| **Tube** | Rectangular duct that goes 16 into the bay. |
-| **Bore** | The tube's inside, where the air goes. Runs through the flange too. |
+| **Card adapter** | The per-card printed piece (`cad/card_adapter.py`): adapter tube + flange. Always its own piece, bolted to the card by the extension bracket. One per card; the quad reuses it unchanged. Not "shroud": that's the GPU's own cover. |
+| **Adapter tube** | Rectangular duct that goes 16 into the bay (−Z). Plain "tube" inside `card_adapter.py` means this one. |
+| **Bore** | The inside of the air path, 73 × 19, where the air goes. Runs through the adapter tube, the flange and the plenum tube at the same section, with no step. |
 | **Flange** | Plate on the shroud end plane. Sets the depth and carries the bracket holes. |
 | **Power notch** | Cutout in the flange's PCB side, top-edge end, clearing the 12V-2x6. |
 | **Scoop** | The tube's PCB-side wall carried on past the tube's end, angled toward the PCB side, so air reaches the fins on that side. Goes in by hooking it over the power plug and sliding it home. Stops short of the top-edge end to clear the header pins in the bay. |
 | **Bracket holes** | Two Ø3 holes in the flange's finger-side end. The extension bracket's screws pass through them into the card's bracket mounting holes. |
 | **Fan connector** | Reference outline in the .3dm (120 × 120) for the fan-side piece. Not solid. |
 | **Flare** | Future Salmon-only piece: card adapter → fan. Size (120 or 140) undecided. |
-| **Plenum** | Quad design: one chamber fed by a fan wall, feeding four card adapters. |
+
+### Quad (brainstorming)
+
+Nothing is drawn and nothing is decided. These are names for things being
+talked about, so we're arguing about the same objects — not a description of a
+design. Several fan layouts are live; see [cooling](docs/cooling.md#quad).
+
+| Term | Means |
+|---|---|
+| **Plenum** | The quad's chamber beyond the card adapters: one box, fed by the fan panel, feeding all four. Maybe more than one printed piece. Never one piece with the adapters. |
+| **Plenum tube** | One of the four passages from the plenum to a card adapter (+Z from the flange face). Same 73 × 19 bore as the adapter tube — the same air path, split across two parts. |
+| **Slip joint** | Where a plenum tube meets a card adapter. Whatever its final form, it is the **tolerance joint**: it absorbs the slot-to-slot error so neither part has to be accurate. |
+| **Fan panel** | The plenum's front face, carrying the fans that feed it. Its slot-side edge is flush with the card column's wall, so anything wider overhangs toward the PSU side. |
+| **Front stage** | Fans on the case front wall feeding the plenum. There for **filtered room air**, not for pressure. |
+| **Collar** | A short sealed duct between fan stages, or from the front stage into the fan panel. Must be a closed ring, not corner posts, or series fans lose their series. |
+| **Transition** | The printed piece from the fan face to the four plenum tubes, where the duct changes section. |
+| **Card column** | The four cards at 40.64 slot pitch: 160 of flange, bore band 141. Sits against one side wall, so everything wider has to overhang toward the PSU. |
 
 ### Views
 
