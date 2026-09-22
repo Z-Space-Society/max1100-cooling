@@ -115,7 +115,7 @@ model, adjusted here.
 | **Bore** | The tube's inside, where the air goes. Runs through the flange too. |
 | **Flange** | Plate on the shroud end plane. Sets the depth and carries the bracket holes. |
 | **Power notch** | Cutout in the flange's PCB side, top-edge end, clearing the 12V-2x6. |
-| **Scoop** | *(V3)* The tube's PCB-side wall carried on past the tube's end, angled toward the PCB side, so air reaches the fins on that side. Goes in by hooking it over the power plug and sliding it home. |
+| **Scoop** | The tube's PCB-side wall carried on past the tube's end, angled toward the PCB side, so air reaches the fins on that side. Goes in by hooking it over the power plug and sliding it home. Stops short of the top-edge end to clear the header pins in the bay. |
 | **Bracket holes** | Two Ø3 holes in the flange's finger-side end. The extension bracket's screws pass through them into the card's bracket mounting holes. |
 | **Fan connector** | Reference outline in the .3dm (120 × 120) for the fan-side piece. Not solid. |
 | **Flare** | Future Salmon-only piece: card adapter → fan. Size (120 or 140) undecided. |
@@ -149,8 +149,8 @@ Katie's Rhino coordinates (−1.5259, −7.3609) so our files overlay hers exact
 
 | Script | Output | Status |
 |---|---|---|
-| [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v2.3dm`, `stl/max1100-card-adapter-v2.stl` | **Card adapter V2**. Draft, not printed |
-| | `rhino/max1100-card-adapter-v3.3dm`, `stl/max1100-card-adapter-v3.stl` | **Card adapter V3**: V2 + scoop (10 deeper, 5 drop). Draft |
+| [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes and the scoop 4 short of the top-edge end. Not yet printed |
+| | `*-v2.*`, `*-v3.*` | Earlier versions, kept as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it |
 | [`cad/check_v1.py`](cad/check_v1.py) | (none) | Confirms `V1` still reproduces Katie's `.3dm` |
 | [`cad/archive/`](cad/archive/) | `stl/archive/`, `images/archive/` | Superseded: card part v2.1, box fit tests, hole coupon. Kept for the record |
 

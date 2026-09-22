@@ -39,7 +39,7 @@ bracket holes sit over them.
 | Screw axis | Along the card's length (screws go in from past the tail) |
 | From the opening's finger-side edge | 4, toward the finger edge (V2) |
 | From the opening's PCB-side edge | 1 toward the PCB side, and 18 toward the shroud side (V2) |
-| Screws | Torx T8. Thread unconfirmed: M2.5 or M3. The adapter's holes are Ø3.0 |
+| Screws | Torx T8. The adapter's holes are Ø3.4; Ø3.0 was too tight to start the screws (V3 fit, 2026-09-22) |
 
 ## Power
 
@@ -50,6 +50,14 @@ bracket holes sit over them.
 - The plug goes in axially and the cable exits straight out past the tail.
   Allow about 35 of straight cable before any bend.
 - Check the latch can still be reached with the card adapter fitted.
+
+## Inside the bay
+
+- A row of header pins runs near the **top-edge end**, 2 to 3 in from that side
+  of the opening. Anything reaching deeper than the tube has to stay clear of
+  them: the V3 scoop fouled them and had to be cut back by hand (2026-09-22).
+  V4 stops the scoop 4 short of the top-edge end.
+- The fin face is 37 to 39 in, so there's open bay in front of it.
 
 ## Not yet measured
 

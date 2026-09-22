@@ -46,6 +46,8 @@ class CardAdapter:
     # hooking it over the power plug and sliding it home. 0 = no scoop.
     scoop_len: float = 0.0      # extra depth past the tube's end
     scoop_drop: float = 0.0     # how far it angles toward the PCB side over that
+    scoop_top_gap: float = 0.0  # how far short of the top-edge end it stops,
+                                # to clear the row of header pins there
     # ---- Reference only ----
     fan: float = 120.0          # fan outline, centered on the tube
 
@@ -63,6 +65,15 @@ V3 = replace(
     V2,
     scoop_len=10.0,                 # PCB-side wall goes 10 deeper (26 total); could be 8
     scoop_drop=5.0,                 # angled 5 toward the PCB side (~27°), a first guess
+)
+
+# V3 printed and fitted 2026-09-22, with two problems: the bracket holes were
+# too tight for the screws, and the scoop fouled a row of header pins near the
+# top edge (2 to 3 in from the side), which had to be cut away by hand.
+V4 = replace(
+    V3,
+    bracket_hole_d=3.4,             # 3.0 → 3.4, clearance for M3
+    scoop_top_gap=4.0,              # stop 4 short of the top-edge end, clearing the pins
 )
 
 
@@ -90,11 +101,14 @@ def build(p):
         # width. A tab 1 up into the tube's wall fuses the two.
         z0, z1, t, d = -p.insert, -p.insert - p.scoop_len, p.wall, p.scoop_drop
         side = [(0, z0 + 1), (t, z0 + 1), (t, z0), (t - d, z1), (-d, z1), (0, z0)]
-        parts.append(Slab("Scoop", [(y + oy, z) for y, z in side], ox, ox + w, axis="x"))
+        parts.append(Slab("Scoop", [(y + oy, z) for y, z in side],
+                          ox, ox + w - p.scoop_top_gap, axis="x"))
     return parts
 
 
+CURRENT = ("v4", V4)  # what `make parts` writes; older files stay in git as the record
+
 if __name__ == "__main__":
-    for n, p in [("v2", V2), ("v3", V3)]:
-        export(build(p), f"max1100-card-adapter-{n}",
-               source=f"cad/card_adapter.py {n.upper()} (generated; edit the script, not this file)")
+    n, p = CURRENT
+    export(build(p), f"max1100-card-adapter-{n}",
+           source=f"cad/card_adapter.py {n.upper()} (generated; edit the script, not this file)")
