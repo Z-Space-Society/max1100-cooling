@@ -5,9 +5,13 @@ server card, with ordinary fans. First target is a single card in **Salmon**
 (Lian Li LANCOOL 216 tower). The per-card part carries over to a four-card
 plenum in a 4U chassis.
 
-- [Dimensions](docs/dimensions.md): card measurements, datasheet and hand-measured
+- [Dimensions](docs/dimensions.md): card, column and chassis measurements,
+  datasheet and hand-measured
 - [Cooling](docs/cooling.md): the problem, design decisions, fan choice, test method
-- Project log and host notes live in SCNVault: `Projects/Max 1100 Notes/`
+- [RackChoice 4U](docs/rackchoice-4u.md): the quad's chassis — what fits, what's
+  still unmeasured
+- Project log and host notes live in SCNVault: `Projects/Max 1100 Notes/` for
+  the single card, `Projects/QuadBox/` for the four-card appliance
 
 ## Terminology
 
@@ -42,7 +46,7 @@ right on their own.** Left and right are only allowed with a named view (below).
    FINGER EDGE  │ ● │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ fin band ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│     │  │  TOP EDGE
       (−X)   ◀──┤   │              bay opening                 │ 12V ├──▶   (+X)
                 │ ● │      base plate · PCB · headers          │ 2x6 │  │
-                │   └──────────────────────────────────────────┘     │  │ 34.35
+                │   └──────────────────────────────────────────┘     │  │ 38.64
                 └────────────────────────────────────────────────────┘  ┴ thickness
                                     PCB SIDE  (−Y)
                 ├──────────────────────── 111.15 height ─────────────┤
@@ -61,7 +65,7 @@ right on their own.** Left and right are only allowed with a named view (below).
 | **PCB side** | Opposite face: the back of the PCB, where the extension bracket plate sits. "Down" in the tail view. | back, bottom |
 | **Length** | I/O end → tail end. 266.7 (312 with extension bracket). | |
 | **Height** | Finger edge → top edge. 111.15. | width |
-| **Thickness** | Shroud side → PCB side. 34.35 (dual slot). | width, depth |
+| **Thickness** | Shroud side → PCB side. **38.64** measured, not the datasheet's 34.35. | width, depth |
 
 ### The tail end
 
@@ -122,9 +126,10 @@ model, adjusted here.
 
 ### Quad (brainstorming)
 
-Nothing is drawn and nothing is decided. These are names for things being
-talked about, so we're arguing about the same objects — not a description of a
-design. Several fan layouts are live; see [cooling](docs/cooling.md#quad).
+Nothing is decided. These are names for things being talked about, so we're
+arguing about the same objects — not a description of a design. Several fan
+layouts are live; see [cooling](docs/cooling.md#quad). The only thing drawn so
+far is the comb, and that's a fit test.
 
 | Term | Means |
 |---|---|
@@ -135,7 +140,11 @@ design. Several fan layouts are live; see [cooling](docs/cooling.md#quad).
 | **Front stage** | Fans on the case front wall feeding the plenum. There for **filtered room air**, not for pressure. |
 | **Collar** | A short sealed duct between fan stages, or from the front stage into the fan panel. Must be a closed ring, not corner posts, or series fans lose their series. |
 | **Transition** | The printed piece from the fan face to the four plenum tubes, where the duct changes section. |
-| **Card column** | The four cards at 40.64 slot pitch: 160 of flange, bore band 141. Sits against one side wall, so everything wider has to overhang toward the PSU. |
+| **Card column** | The four cards at 40.64 slot pitch: 160 measured across the cards, bore band 141. Sits against one side wall, so everything wider has to overhang toward the PSU. |
+| **Tail box** | Option G: one box from the case front wall back to the four tail ends, sealing on the card column instead of on four separate adapters. Bolts to the floor standoffs, the top rail and the front wall. |
+| **Tail wall** | The tail box's face at the tail end plane — the thing the user called the "back plate". Closes everything except the four bay openings. |
+| **Comb** | Spine plus teeth spanning the column, holding the teeth on the 40.64 pitch. Part of the tail wall. `cad/comb.py`. |
+| **Comb tooth** | One tooth, in the gap between two adjacent cards — the "spacer between the GPUs". Seals the gap, locates the card sideways, and in a floor-mounted comb carries its weight. 2.0 thick. |
 
 ### Views
 
@@ -167,7 +176,8 @@ Katie's Rhino coordinates (−1.5259, −7.3609) so our files overlay hers exact
 |---|---|---|
 | [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes and the scoop 4 short of the top-edge end. Not yet printed |
 | | `*-v2.*`, `*-v3.*` | Earlier versions, kept as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it |
-| [`cad/check_v1.py`](cad/check_v1.py) | (none) | Confirms `V1` still reproduces Katie's `.3dm` |
+| [`cad/comb.py`](cad/comb.py) | `rhino/max1100-comb-v1.3dm`, `stl/max1100-comb-v1.stl` | **Comb V1** (`CURRENT`): fit test for the quad. Printed and fitted 2026-09-23 — spans the four cards, teeth into all three gaps |
+| [`cad/check_v1.py`](cad/check_v1.py) | (none) | Confirms the card adapter's `V1` still reproduces Katie's `.3dm` |
 | [`cad/archive/`](cad/archive/) | `stl/archive/`, `images/archive/` | Superseded: card part v2.1, box fit tests, hole coupon. Kept for the record |
 
 Rhino models are in [`rhino/`](rhino/): Katie's originals, plus the `.3dm`
@@ -177,7 +187,7 @@ extrusion (editable in Rhino) and as a single watertight STL.
 
 **Print settings** (match the coupons or the numbers don't transfer): PETG,
 0.2 mm layers, 4 perimeters, 20 % infill, no supports. Orientation is in each
-script's docstring.
+script's docstring — card adapter flange down, comb flat on its X-Y face.
 
 ## Build
 

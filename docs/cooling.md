@@ -1,8 +1,9 @@
 # Cooling
 
 All mm. Names follow [Terminology](../README.md#terminology). See also
-[dimensions](dimensions.md). The project log and host notes are in SCNVault:
-`Projects/Max 1100 Notes/`.
+[dimensions](dimensions.md) and [the chassis](rackchoice-4u.md). The project
+log and host notes are in SCNVault: `Projects/Max 1100 Notes/` for the single
+card, `Projects/QuadBox/` for the four-card appliance.
 
 ## Problem
 
@@ -29,7 +30,7 @@ From datasheet 817799.
 - **Push.** The fan is at the tail end. Air goes through the fins and out the
   I/O end, which matches both a server's airflow and the tower's own
   front-to-back flow.
-- **Card adapter** (`cad/card_adapter.py`, V2):
+- **Card adapter** (`cad/card_adapter.py`, V4):
   - The tube goes 16 into the bay.
   - The flange sits on the shroud end plane.
   - The extension bracket's screws go through the bracket holes into the
@@ -54,8 +55,13 @@ From datasheet 817799.
   Volume isn't the problem; **static pressure** through 267 of dense fins is.
 - **But that 4 CFM may be 2.75× too low.** It assumes the datasheet's LFM is
   referenced to our bore area. Approach-velocity figures are normally
-  referenced to the card's slot cross-section, 34.35 × 111.15 = 3818 mm²,
-  which would make it **~12 CFM per card, ~47 CFM for the quad**. It changes
+  referenced to the card's slot cross-section. That was taken as
+  34.35 × 111.15 = 3818 mm², giving **~12 CFM per card, ~47 CFM for the
+  quad**. The card measured 38.64 on 2026-09-23
+  ([dimensions](dimensions.md#thickness-3864-not-3435)), so the area is
+  really 4295 mm² and scenario B is about **12 % higher, ~53 CFM**. The
+  static estimates below still use 47 and have not been redone; the
+  correction pushes every one of them the same way and changes no ranking. It changes
   how much fan the quad needs: at 17 CFM total a front stage plus two panel
   fans is heavily over-fanned and every fan runs near shutoff, where they are
   stall-noisy for no benefit; at 47 CFM it's about right. The Figure 6-4
@@ -71,16 +77,53 @@ From datasheet 817799.
 
 Two knobs, and they do different things:
 
-- **Width (parallel) buys flow.** We need 5–21 % of free air, so flow is the
-  resource in surplus. Going 2 fans across → 3 across moved the static
-  estimate from ~4.2 to ~4.4 mmH₂O. Nearly nothing.
+- **Width (parallel) buys flow**, which is usually the resource in surplus.
 - **Depth (series) buys pressure**, which is the scarce one. Pressure adds.
+
+**But width only stops helping once you're already far left on the curve** —
+that qualifier matters and an earlier version of this note left it off. Going
+2 × 140 across → 3 across moved the estimate from ~4.2 to ~4.4 mmH₂O, because
+at 21 % of free air those fans were already on the flat part. One 120 at
+scenario B is at 61 % of free air, on the *steep* part, and there a second fan
+across is worth a lot. Check where on its curve a fan actually sits before
+assuming width is wasted.
 
 And because **pressure ∝ rpm² while flow ∝ rpm**, you can't trade width for
 quiet: slow a wide array down and static collapses quadratically. The quiet
 way to get static is *series at reduced rpm* — three fans at 1500 rpm against
 one at 2500 makes about the same pressure and is roughly **6 dB quieter**
 (−11 dB per fan from the rpm ratio, +4.8 dB for having three).
+
+### 120 or 140: the chassis settles it
+
+**A 140 fan does not mount on the RackChoice front plate.** Its upper screw
+holes land 9.5 inside the power button cutout — see
+[dimensions](dimensions.md#rackchoice-4u-chassis). Not tight; it doesn't fit.
+That takes the 140 out of the quad duct regardless of its aerodynamics, and
+the P14 Pros bought on 2026-09-22 go to Salmon, which is the first target and
+has room for them.
+
+Manufacturer figures, both PWM with PST:
+
+| | P12 Pro PST | P14 Pro PST |
+|---|---|---|
+| Part # | ACFAN00307A | ACFAN00319A |
+| Static | **6.9 mmH₂O** | 5.2 |
+| Free air | 77 CFM | 110 |
+| Range | 600–3000 rpm | 400–2500 |
+| Thickness | 25 | 27 |
+
+The 120 makes **33 % more static** and moves 30 % less air — the usual trade,
+and pressure is the scarce resource here. Three in series:
+
+| | 120 | 140 |
+|---|---|---|
+| Scenario A, 17 CFM | **~16.2 mmH₂O** | ~13.2 |
+| Scenario B, 47 CFM | ~7.7 | ~8.6 |
+
+So the 120 wins scenario A outright and loses B by ~10 %. A scaling-law
+estimate had put the P12 Pro at ~5.5 mmH₂O; the two fans aren't geometrically
+similar, so that ran 20 % low. Use the published figures, not the scaling law.
 
 ### Which Arctic P14
 
@@ -129,9 +172,9 @@ swap, not a redesign.
 
 ## Quad
 
-Four cards in the RackChoice 4U (vault: `RackChoice 4U Fit`), board slots 1,
-3, 5, 7, standing upright, tails facing the case front, the column against one
-side wall. Worked through 2026-09-22. **Nothing here is drawn yet.**
+Four cards in the RackChoice 4U ([rackchoice-4u](rackchoice-4u.md)), board
+slots 1, 3, 5, 7, standing upright, tails facing the case front, the column
+against one side wall. Worked through 2026-09-22.
 
 **Status: brainstorming.** Nothing here is decided and nothing here is
 retired. This is a record of options and the reasoning behind them, written
@@ -226,16 +269,175 @@ case and the plenum.
 
 | | Fans | Front width used | Est. static, scenario B | Biggest printed part |
 |---|---|---|---|---|
+| **E** — 1 across × 3–4 deep | 3–4×120 | 120 | ~7.7 / ~10.2 | transition, 121 wide |
 | **A** — fan panel + collar | 2×120 panel, 2×140 front | 280 | ~8.4 | fan panel, 240 wide |
 | **B** — 2 across × 2 deep | 4×140, all in the duct | 280 | ~8.4 | transition, 280 wide |
-| **C** — 1 across × 3 deep | 3×140, all in the duct | 140 | ~8.1 | transition, 141 wide |
+| **C** — 1 across × 3 deep | 3×140, all in the duct | 140 | ~8.6 | transition, 141 wide |
+| **F** — 2 across × 2–3 deep | 4–6×120 | 240 | ~8.0 / ~11.9 | transition, 240 wide |
+| **G** — tail box | E's stack, in a box | 120–240 | ~8.6 (no transition loss) | tail wall, ~170 wide |
 
-**Currently leaning C** (2026-09-22), on part size and the width coincidence
-below. That's a lean, not a decision — none of this has met hardware.
+**G is a different shape of thing and not a competitor to the others.** It
+replaces the plumbing — adapters, slip joint, transition, collar — with one
+box, and E's fan stack sits inside it unchanged. Read the fan rows as the
+question of how many fans, and G as the question of what holds them.
+
+**Currently leaning E** (2026-09-23) for the fan stack. The chassis decided most of it: a 140
+doesn't mount on the front plate, which takes B and C out on hardware rather
+than on aerodynamics, and A used 140s for its front stage. F is the fallback
+if E turns out short on pressure, but it's side-by-side and a 240-wide part,
+which the user would rather avoid — a fourth fan in series on E is the
+cheaper way to the same place. Still a lean, not a decision.
 
 All four estimates assume the **P14 Pro** at 2500 rpm. Width buys flow, depth
 buys pressure, and pressure goes as rpm² — see [Fans](#fans), which is why
 three options out of four stack in series rather than spreading out.
+
+### Option G — the tail box
+
+Proposed 2026-09-23. One box from the case front wall back to the four tail
+ends — the 165 from the grill to the flange faces — bolted to the six floor
+standoffs, to the top rail and to the front wall, with a lid. The fans mount
+at the front of it. **It seals on the card column instead of on four separate
+adapters**, so the card adapter, the plenum tubes and the slip joint all come
+out.
+
+**The one hardware result so far went its way.** Comb V1 (`cad/comb.py`), a
+rigid bar with three teeth on the 40.64 pitch, fitted the four installed cards
+on 2026-09-23 — see [dimensions](dimensions.md#quad-column). A single rigid
+part spans the column, which is what the whole idea rests on.
+
+#### What it deletes
+
+- **The slip joint**, and with it the hardest problem in the quad: four
+  joints each absorbing slot-to-slot error. One compliant perimeter replaces
+  four tolerance joints. (The split between adapter and plenum still has two
+  other justifications — axial screw access and pulling one card without
+  disturbing the rest — so this doesn't retire the adapter architecture, it
+  removes its main argument.)
+- **The transition.** The box *is* the plenum, so there's no 3D contraction to
+  design, print or seal, and no ~121 × 120 × 75 part.
+- **The collar and the front stage.** A box bolted to the front wall breathes
+  filtered room air by construction. That was worth more than a fan stage —
+  see [the front stage](#front-stage-as-option-a-uses-it) for why — and here
+  it costs nothing.
+- **The slant.** The fan centre is fixed at 77.9 and the bore centre is 52–70;
+  a duct had to slant between them. A box just contains both.
+- **The power notch problem.** In the adapter, the notch is an open cutout
+  that lets air out of the bay before it reaches the fins
+  ([dimensions](dimensions.md#power), parked, never measured). Inside the box
+  it opens into the plenum, not the room, so there's no pressure across it and
+  nothing to leak.
+
+#### Inlet area decouples from fan area
+
+A duct bolted to one grill position inherits ~1.2 mmH₂O of inlet loss. A box
+whose front face spans two positions with a fan on one drops that to ~0.30 —
+**~0.9 mmH₂O recovered for nothing**, more than a fourth fan in series is
+worth per stage. A box can breathe through more grill than its fans cover; a
+duct can't.
+
+The counter-pressure is option D's surviving conclusion: **at least one front
+position stays with the rest of the machine.** With three positions, a box
+spanning two leaves one for the CPU, PSU and drives. That's the trade to keep
+an eye on, and it argues for a box no wider than it needs to be.
+
+#### The comb, and what the teeth do
+
+Four jobs in one part: seal the gap between cards, locate each card sideways,
+carry the column's 5.2 kg, and replace the hanging card-guide rail ([rackchoice-4u](rackchoice-4u.md#tail-support)).
+The [leak arithmetic](dimensions.md#quad-column) is why it's not optional —
+the gaps are a nearly free bypass straight into the case, so unsealed they
+take the air whatever they measure.
+
+- **Teeth are 2.0**, which went into all three gaps as printed. Confirmed
+  over the last 25 before the tail end plane — the region a tail wall seals
+  in. Deeper than ~45 along the card, past the extension bracket plate, the
+  gap may open up.
+- **A floor-mounted comb can't reach back past the tail plane.** That space is
+  over the motherboard. So the V1 test comb hangs from the top edges instead,
+  which also makes it a single constant cross-section to print. Where the
+  real one lives depends on the motherboard's front edge, still unmeasured.
+- **Support vertically, with clearance, never by clamping.** The box is
+  registered to the case floor and the cards to the board; a rigid tie between
+  them preloads the PCIe connectors with the whole tolerance chain.
+- **Removing the extension brackets** is then on the table: their job is to
+  reach a card guide, which the comb does better, and they currently occupy
+  the inter-card gap from Z = 0 to +45 where the teeth want to be. Reversible.
+
+#### What it gives up, and what it risks
+
+- **The scoop.** The adapter's only genuine airflow claim is aiming the stream
+  at the PCB-side edge of the fin throat. A box pressurises the opening but
+  doesn't aim anything. Worth re-testing as a bay insert — a scoop with no
+  flange and no bracket holes — *after* the box works, and only once the fin
+  throat has been calipered. It may never have been needed.
+- **Salmon still needs the card adapter.** Single card, no box, the fan has to
+  attach to something. V4 and the flare are untouched by any of this.
+- **Perimeter leak scales with box size.** A 1 mm gap around a 200 × 140 box
+  perimeter is ~700 mm², 13 % of bore. Keep the box to the column's width, not
+  the case's.
+- **Print size.** 165 deep × 160–200 wide × ~140 tall is nobody's 220 bed.
+  Likely a printed frame with flat panels, or a folded aluminium floor piece
+  carrying printed parts, rather than an all-printed box.
+- **Fan vibration.** Bolting fans to the sheet front plate will make the panel
+  sing, and quiet is the binding constraint. Soft-mount them to the box.
+
+#### What it needs measured
+
+Beyond the whole [not-yet-measured list](dimensions.md#not-yet-measured), four
+belong to this option specifically: the **motherboard's front edge** (where
+the floor piece can start), **which end of the column** the 12 of case-wall
+clearance sits at, the **standoff thread and positions**, and **which grill
+positions** sit in front of the column. Plus one from the photo: the row of modules in sheet-metal
+brackets between the front bar and the board is in the box's footprint —
+whatever it is, does it stay?
+
+### Option E — one 120 wide, three (or four) deep
+
+**Currently the strongest**, and the one the user prefers (2026-09-23): no
+side-by-side, one narrow printed transition, and it's the only fan size that
+mounts on the front plate at all.
+
+Depth, from measured chassis numbers ([dimensions](dimensions.md#rackchoice-4u-chassis)):
+
+| | From the grill |
+|---|---|
+| Three fans (25 each) | 0–75 |
+| or four fans | 0–100 |
+| Extension bracket tips | 120 |
+| Duct | 100–165 (65 with four fans, 90 with three) |
+| Flange faces | 165 |
+
+**Four deep fits** inside the clear space before the bracket tips, with 65
+left for the transition — a 20° half-angle contraction, comfortable. A 5-pack
+covers four plus a spare. That's the lever if the impedance curve turns out
+harsh: scenario B goes from ~7.7 at three deep to **~10.2 at four**, before
+grill losses. Run three if the curve is benign.
+
+**Geometry.** A 120 frame against the 140.9 bore band means the duct has to
+*expand* ~10.5 per side laterally while contracting 120 → 73 vertically, so
+it's a 3D transition rather than the 2D squeeze a 140 would have given. At
+65–90 of length the lateral half-angle is 7–9°, inside the no-separation rule.
+Net area 10,029 → 5,548 = **1.81:1**, gentler than a 140's 2.28:1. The part is
+about **121 × 120 × 75**.
+
+The fan's centre is fixed at 77.9 above the case floor by the plate's screw
+holes, while the bore centre is an estimated 52–70, so the duct slants down
+slightly on its way back. Measuring the bore centre settles how much.
+
+**The grill is the inlet, and it costs.** Loss goes as v², so spreading the
+inlet across positions helps fast. At ~55 % open with a sharp-edge coefficient
+of ~1.5, scenario B:
+
+| Positions used | Hole velocity | Loss |
+|---|---|---|
+| 1 | 3.6 m/s | ~1.2 mmH₂O |
+| 2 | 1.8 m/s | ~0.30 |
+| 3 | 1.2 m/s | ~0.13 |
+
+A fan bolted straight to one position inherits the ~1.2, taking scenario B
+from ~7.7 to ~6.5. Worth checking whether the grill can be cut out — that
+recovers it without an inlet box and without spending depth.
 
 ### Option C — one 140 wide, three deep
 
@@ -283,9 +485,9 @@ not fan screws.
 **Mounting: hang it off the front bar** (276–366, lid height). That bar runs
 the full length of the duct and solves the cantilever problem. Should clear
 vertically (duct top ~140, bar ~170) unless its down-turned flange drops more
-than ~30 — still open in the vault.
+than ~30 — still open ([rackchoice-4u](rackchoice-4u.md#open-issues)).
 
-**The card-guide rail wants the same space.** The vault's tail-support plan
+**The card-guide rail wants the same space.** The tail-support plan
 hangs an aluminium angle from that same bar at 40.64 pitch to catch the
 bracket tips at ~312 — inside the duct. Two things resolve it:
 
@@ -313,8 +515,8 @@ duct, this is where to come back to.
 
 **120 looks right for the panel, 140 looks hard.** In the card-height axis the bore centre is an estimated 52
 to 70 above the chassis floor (the spread is where the flange sits in the
-card's 111.15 height, compounded with the vault's estimate of card height above
-the floor). A 120 resting on the floor centres at 60 — inside that band, so no
+card's 111.15 height, compounded with the card height above
+the floor, now measured at 127). A 120 resting on the floor centres at 60 — inside that band, so no
 riser. A 140 on the floor centres at 70, at the top of the band or past it, and
 wants 140 of card height where there is only ~111.
 
@@ -366,12 +568,13 @@ more, so lower rpm for the same flow. Quiet is the binding constraint.
 - Leave the remaining ~140 of front width open for CPU, PSU and drives. Don't
   seal the whole front to the duct — the stock 80 mm rear exhausts are
   reportedly loud and shouldn't be leaned on.
-- Contingent on the front wall behind the door being open (vault open issue 5).
+- Contingent on the front wall behind the door being open
+  ([rackchoice-4u](rackchoice-4u.md#open-issues), issue 5).
 
 #### Depth budget for option A
 
-Card tail at ~267 from the inside of the rear wall, front wall at ~437 (vault,
-scaled from photos, ±10). About 170 to work in.
+Card tail at ~267 from the inside of the rear wall, front wall at ~437
+([rackchoice-4u](rackchoice-4u.md), scaled from photos, ±10). About 170 to work in.
 
 | | Depth from the rear wall |
 |---|---|
@@ -400,6 +603,22 @@ real lateral necking where C has none. If uptime turns out to matter more than
 part size, or if scenario B (below) proves real and ~8 mmH₂O isn't enough,
 this is the one to come back to — it's also the base for a 2×3 six-fan version
 at ~12.6 mmH₂O.
+
+### Option F — two 120s across, two or three deep
+
+Kept as the fallback if E is short on pressure. One 120 at scenario B sits at
+61 % of free air, on the steep part of its curve, so a second fan across is
+worth much more here than it was for the 140s:
+
+| | Fans | Static, scenario B |
+|---|---|---|
+| 2 across × 2 deep | 4 | ~8.0 |
+| 2 across × 3 deep | 6 | ~11.9 |
+
+Behind E on two counts the user cares about: it's side-by-side, and the
+transition goes to 240 wide, past a 220 bed, so it splits into two pieces with
+a seam to seal. A fourth fan in series on E reaches ~10.2 with neither
+problem. Come back here if four-deep still isn't enough.
 
 ### Option D — three 140s across, one deep
 
@@ -477,8 +696,18 @@ flange down on the bed.
 - [ ] Scoop length (10 or 8) and drop (5), once it's in and the fins can be seen (M2.5 or M3), and whether Ø3.0 holes pass it
 - [ ] Read the Figure 6-4 impedance curve — it also settles what area the 285 LFM is referenced to, which sets the quad's fan count
 - [ ] Fan size for Salmon: 120 or 140
-- [ ] Order P14 Pro PST (ACFAN00319A, 5-pack). Not the plain P14 — half the static and 3-pin DC. See [Fans](#fans)
-- [ ] Quad fan layout: options A–D are all live. Leaning C (1 across × 3 deep, 140s). Figure 6-4 and hardware in the case decide it
+- [x] P14 Pro PST (ACFAN00319A, 5-pack) ordered 2026-09-22. Now headed for Salmon: a 140 doesn't mount on the quad chassis' front plate
+- [ ] Order P12 Pro PST (ACFAN00307A, 5-pack, ~$65) for the quad duct — 4 deep plus a spare
+- [ ] Check whether the front grill can be cut out. Worth ~1.2 mmH₂O at scenario B, for free
+- [x] Comb V1 printed and fitted (2026-09-23). One rigid part spans the four cards on the 40.64 pitch, and 2.0 teeth enter all three gaps
+- [ ] Quad fan layout: options A–G are all live. Leaning E (1 across × 3–4 deep, 120s) for the stack, with G (the tail box) as the shape around it. Figure 6-4 decides three deep vs four
+- [x] Card thickness settled at 38.64 by comb V1 (2026-09-23), not the datasheet's 34.35. Gap between cards is 2.0
+- [ ] Redo the scenario B flow and the static estimates on 53 CFM rather than 47, now the card's frontal area is known
+- [ ] Note which end of the column the 12 of case-wall clearance sits at — card 1's PCB side or card 4's shroud side
+- [ ] Measure the motherboard's front edge from the card tail plane. Decides where the tail box's floor piece can bolt and whether the comb can be supported from below
+- [ ] Floor and side-wall standoffs: thread size and positions
+- [ ] Which front grill positions sit in front of the card column, and how many the tail box can take while leaving one for the rest of the machine
+- [ ] Identify the row of modules in sheet-metal brackets between the front bar and the board — it sits in the tail box's footprint
 - [ ] Does the front bar's down-turned flange foul the duct? If yes, option A comes back into play
 - [ ] Design the Salmon flare
 - [ ] Measure the bore centre's height above the chassis floor with a card installed. The 52-to-70 estimate is what decides whether the panel 120s sit on the floor or need a riser

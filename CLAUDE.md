@@ -84,7 +84,9 @@ before an STL is committed.
 
 ## Relationship to SCNVault
 
-The vault (`~/Projects/Z-Space/scnvault/Projects/Max 1100 Notes/`) holds the
-project log, host/driver notes and the RackChoice 4U fit. This repo holds the
-dimensions, cooling design notes and all CAD. Don't edit the vault from here
-unless asked.
+The vault holds the project log and host/driver notes:
+`Projects/Max 1100 Notes/` for the single card, `Projects/QuadBox/` for the
+four-card appliance (the chassis belongs to QuadBox, not the single card).
+This repo holds the dimensions, the chassis fit, the cooling design notes and
+all CAD — the RackChoice 4U note moved here 2026-09-23 and the vault keeps a
+pointer stub. Don't edit the vault from here unless asked.
