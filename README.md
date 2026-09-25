@@ -145,6 +145,8 @@ far is the comb, and that's a fit test.
 | **Tail wall** | The tail box's face at the tail end plane — the thing the user called the "back plate". Closes everything except the four bay openings. |
 | **Comb** | Spine plus teeth spanning the column, holding the teeth on the 40.64 pitch. Part of the tail wall. `cad/comb.py`. |
 | **Comb tooth** | One tooth, in the gap between two adjacent cards — the "spacer between the GPUs". Seals the gap, locates the card sideways, and in a floor-mounted comb carries its weight. 2.0 thick. |
+| **Tail box gauge** | The tail box's outline at card-top height: the comb plus rails to the case wall and a bar at the front plate. A fit test, `cad/tail_box_gauge.py`. |
+| **Tail box demo** | An upside-down L, closed by the case wall: a 1.2 side wall to the case floor against card 1, a 1.2 lid out to the case wall, teeth sealing the full gap. Held on by the teeth. A show model, `cad/tail_box_demo.py`. |
 
 ### Views
 
@@ -177,6 +179,8 @@ Katie's Rhino coordinates (−1.5259, −7.3609) so our files overlay hers exact
 | [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes and the scoop 4 short of the top-edge end. Not yet printed |
 | | `*-v2.*`, `*-v3.*` | Earlier versions, kept as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it |
 | [`cad/comb.py`](cad/comb.py) | `rhino/max1100-comb-v1.3dm`, `stl/max1100-comb-v1.stl` | **Comb V1** (`CURRENT`): fit test for the quad. Printed and fitted 2026-09-23 — spans the four cards, teeth into all three gaps |
+| [`cad/tail_box_gauge.py`](cad/tail_box_gauge.py) | `rhino/max1100-tail-box-gauge-v1.3dm`, `stl/max1100-tail-box-gauge-v1.stl` | **Tail box gauge V1** (`CURRENT`): fit test for the tail box. Comb V1 plus an open ring out to the case wall (172) and the front plate (165), both 1 short. Not yet printed |
+| [`cad/tail_box_demo.py`](cad/tail_box_demo.py) | `rhino/max1100-tail-box-demo-v1.3dm`, `stl/max1100-tail-box-demo-v1.stl` | **Tail box demo V1** (`CURRENT`): an upside-down L: a 1.2 wall to the case floor against card 1, a 1.2 lid out to the case wall, teeth to the finger edge. For showing people, not for use |
 | [`cad/check_v1.py`](cad/check_v1.py) | (none) | Confirms the card adapter's `V1` still reproduces Katie's `.3dm` |
 | [`cad/archive/`](cad/archive/) | `stl/archive/`, `images/archive/` | Superseded: card part v2.1, box fit tests, hole coupon. Kept for the record |
 
@@ -187,7 +191,8 @@ extrusion (editable in Rhino) and as a single watertight STL.
 
 **Print settings** (match the coupons or the numbers don't transfer): PETG,
 0.2 mm layers, 4 perimeters, 20 % infill, no supports. Orientation is in each
-script's docstring — card adapter flange down, comb flat on its X-Y face.
+script's docstring — card adapter flange down, comb flat on its X-Y face,
+tail box gauge ring-face down, tail box demo lid down.
 
 ## Build
 

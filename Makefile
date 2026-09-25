@@ -6,6 +6,8 @@ PY := .venv/bin/python
 parts:
 	$(PY) cad/card_adapter.py
 	$(PY) cad/comb.py
+	$(PY) cad/tail_box_gauge.py
+	$(PY) cad/tail_box_demo.py
 
 # card_adapter.V1 still reproduces Katie's Rhino model
 check:
