@@ -155,18 +155,21 @@ taken with the case in hand. The front wall's inner face is the grill plane.
 | Grill → flange faces (derived) | 165 = 120 + the bracket's 45 past the tail |
 | Lower fan screw hole, above the case floor | 25.4 (1") |
 | Bottom of the power buttons, above the upper screw hole | 10 (1 cm) |
+| Top of the power buttons, above the case floor | **157** (tape, photo, 2026-09-28) |
+| Motherboard's front edge | **20** in from the tail end plane: the cards reach 20 past it (2026-09-28). The floor in front of the tails is clear |
 | Front grill positions | 3 × 120 side by side, perforated, screw holes top and bottom |
 | Threaded standoffs, case floor | ~5 proud. Six of them, the spare motherboard mounting points. Thread and positions not taken |
-| Threaded standoffs, slot-side wall | ~5 proud (photo, 2026-09-23). Thread and positions not taken |
+| Threaded standoffs, slot-side wall | ~5 proud (photo, 2026-09-23). Thread not taken |
+| Standoff on the case wall past card 4 | **60** from the front wall, **~125** above the case floor (tape, photo, 2026-09-28). A second one sits lower, around 50, position not taken |
 | Column datum → case wall | **172** (tape, 2026-09-23) |
-| Clearance past the column, derived | **~12** = 172 − 160.56 |
+| Clearance past the column, derived | 11.44 = 172 − 160.56 |
+| Card 4's shroud side → case wall, at the top edge | **12** (tape, photo, 2026-09-28) |
 
-**The column is not against the case wall.** The 172 runs from the same end
-the 160 was taken from, out to the case wall, so there is about **12** of
-clearance beyond the card column — which is what the tail wall and the box's
-side panel have to close. Which end of the column that 12 sits at (card 1's
-PCB side or card 4's shroud side) isn't written down; it decides which side of
-the box seals against a card face and which against sheet metal.
+**The column is not against the case wall.** There is about **12** of
+clearance past **card 4's shroud side**, measured directly at the top edge and
+agreeing with the 11.44 derived from the 172. That's what the tail wall and
+the box's side panel have to close: card 1's side of the box seals against a
+card face, card 4's side against sheet metal.
 
 Derived from those, above the case floor:
 
@@ -187,8 +190,6 @@ the power button cutout. The 120 clears with 10 to spare.
 | Fin throat, width × height | Estimated from photos: 15–20 × ~68 |
 | Fin count / fin pitch | |
 | Tallest header above the PCB | |
-| **Motherboard front edge, from the card tail plane** | An EEB board is 330 deep, which would put it ~63 past the tails — so the first ~63 in front of the tails is over the board, not free floor. Decides where the tail box's floor piece can bolt down and whether a comb can be supported from below |
-| Which end of the column the 12 of case-wall clearance is at | See the 172 above |
 | Gap between cards past the extension bracket plate | 2.0 is confirmed over the last 25 only. Deeper than ~45 along the card it may open up |
 | Floor and side-wall standoffs | Thread size, and positions from the card tail plane and the slot-side wall |
 | Bore centre above the chassis floor, card installed | Estimated 52–70. Now one measurement away: the finger edge is 15.85 above the floor, so only the bore centre above the finger edge is missing. The front fan's centre is fixed at 77.9, so this sets how far a duct has to slant |

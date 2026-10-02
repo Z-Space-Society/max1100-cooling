@@ -43,6 +43,8 @@ class Slab:
     # "z": outline is (x, y), extruded z0 → z1 (the usual case).
     # "x": outline is (y, z), extruded x0 → x1 (passed as z0, z1). For walls
     # that slope in Y as they go in Z. No cutouts or holes.
+    # "y": outline is (z, x), extruded y0 → y1 (passed as z0, z1). For holes
+    # that run along Y; a Hole's (x, y) is then (z, x).
     axis: str = "z"
 
 
@@ -91,6 +93,21 @@ def _x_extrusion(s):
     return e
 
 
+# axis="y": local (u, v, w) → world (x, y, z) = (v, w, u)
+_Y_ROWS = [[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, 0]]
+
+
+def _y_xform():
+    t = r.Transform(1.0)
+    for i, row in enumerate(_Y_ROWS):
+        for j, v in enumerate(row):
+            setattr(t, f"M{i}{j}", float(v))
+    return t
+
+
+_Y_XFORM = _y_xform()
+
+
 def write_3dm(items, name, source=""):
     f = r.File3dm()
     f.Settings.ModelUnitSystem = r.UnitSystem.Millimeters
@@ -120,6 +137,8 @@ def write_3dm(items, name, source=""):
             assert e.AddInnerProfile(_polyline(offset(c, -ox, -oy), 0))
         for h in it.holes:
             assert e.AddInnerProfile(_circle(Hole(h.x - ox, h.y - oy, h.d), 0))
+        if it.axis == "y":  # built as (z, x, y), turned to world (x, y, z)
+            assert e.Transform(_Y_XFORM), f"could not turn {it.layer} to Y"
         assert e.IsValid and e.IsSolid, f"bad extrusion on {it.layer}"
         f.Objects.AddExtrusion(e, attrs)
     out = RHINO_DIR / f"{name}.3dm"
@@ -150,14 +169,16 @@ def to_mesh(items):
             + [_ccw(_circle_pts(h))[::-1] for h in s.holes]
         cs = CrossSection(loops, FillRule.EvenOdd)
         z0, z1 = s.z0, s.z1
-        if s.axis == "x":
-            # An X slab's end faces usually lie in the same plane as another
-            # part's faces, and exactly coplanar faces break the union (STL not
-            # watertight). Pull the ends in 1 µm; the .3dm stays exact.
+        if s.axis in ("x", "y"):
+            # An X or Y slab's end faces usually lie in the same plane as
+            # another part's faces, and exactly coplanar faces break the union
+            # (STL not watertight). Pull the ends in 1 µm; the .3dm stays exact.
             z0, z1 = z0 + FUSE_EPS, z1 - FUSE_EPS
         body = cs.extrude(z1 - z0).translate([0, 0, z0])
         if s.axis == "x":  # local (u, v, w) → world (x, y, z) = (w, u, v)
             body = body.transform([[0, 0, 1, 0], [1, 0, 0, 0], [0, 1, 0, 0]])
+        elif s.axis == "y":
+            body = body.transform(_Y_ROWS)
         solid += body
     m = solid.to_mesh()
     return trimesh.Trimesh(vertices=m.vert_properties[:, :3], faces=m.tri_verts)

@@ -71,6 +71,9 @@ before an STL is committed.
   in 1 µm (`FUSE_EPS`), because faces exactly coplanar with another part's
   faces break the union. Its Rhino bounding box is loose; use `Profile3d`
   points to check it.
+- `Slab(axis="y")` extrudes a (Z, X) section along Y, for holes that run
+  across the case wall (the case side rib's screw). Takes round holes, whose
+  (x, y) is then (z, x). Ends pulled in 1 µm in the STL, like axis="x".
 - rhino3dm can't do booleans or meshing. Build parts from extruded profiles
   (`Slab`). If a part ever needs something that isn't an extrusion, raise it
   before reaching for another approach.

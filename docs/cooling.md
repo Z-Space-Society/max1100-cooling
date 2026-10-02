@@ -703,8 +703,8 @@ flange down on the bed.
 - [ ] Quad fan layout: options A–G are all live. Leaning E (1 across × 3–4 deep, 120s) for the stack, with G (the tail box) as the shape around it. Figure 6-4 decides three deep vs four
 - [x] Card thickness settled at 38.64 by comb V1 (2026-09-23), not the datasheet's 34.35. Gap between cards is 2.0
 - [ ] Redo the scenario B flow and the static estimates on 53 CFM rather than 47, now the card's frontal area is known
-- [ ] Note which end of the column the 12 of case-wall clearance sits at — card 1's PCB side or card 4's shroud side
-- [ ] Measure the motherboard's front edge from the card tail plane. Decides where the tail box's floor piece can bolt and whether the comb can be supported from below
+- [x] The 12 of case-wall clearance is past card 4's shroud side: 12 by tape at the top edge (2026-09-28)
+- [x] Motherboard's front edge is 20 in from the card tail plane (2026-09-28), so the floor in front of the tails is clear
 - [ ] Floor and side-wall standoffs: thread size and positions
 - [ ] Which front grill positions sit in front of the card column, and how many the tail box can take while leaving one for the rest of the machine
 - [ ] Identify the row of modules in sheet-metal brackets between the front bar and the board — it sits in the tail box's footprint

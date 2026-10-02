@@ -8,6 +8,7 @@ parts:
 	$(PY) cad/comb.py
 	$(PY) cad/tail_box_gauge.py
 	$(PY) cad/tail_box_demo.py
+	$(PY) cad/case_side_rib.py
 
 # card_adapter.V1 still reproduces Katie's Rhino model
 check:
