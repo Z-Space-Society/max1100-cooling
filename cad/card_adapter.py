@@ -13,7 +13,9 @@ tail. Dimensions below are measured from REF, the tube's outer corner at the
 finger edge / PCB side. REF sits at ORIGIN in Rhino so these files overlay
 hers exactly.
 
-Print flange-down (z = 2 face on the bed), tube up. No supports.
+Print flange-down (flange face on the bed: z = 2, or the seat's face at z = 3
+when there is one), tube up. No supports; the seat's rebate floor is a 1
+overhang, 1 above the bed.
 """
 from dataclasses import dataclass, replace
 
@@ -48,6 +50,13 @@ class CardAdapter:
     scoop_drop: float = 0.0     # how far it angles toward the PCB side over that
     scoop_top_gap: float = 0.0  # how far short of the top-edge end it stops,
                                 # to clear the row of header pins there
+    # ---- Seat: a layer added on the flange face (+Z, toward the fan) that ----
+    # stops short of the bore all round, leaving a rebate around the bore's
+    # mouth for the next part to sit in. The layer's face becomes the print
+    # face; the bore stays full size. The rebate skips the power notch's
+    # length on the PCB side. 0 = no seat.
+    seat_t: float = 0.0         # layer thickness = rebate depth
+    seat_inset: float = 0.0     # how far the layer stops short of the bore
     # ---- Reference only ----
     fan: float = 120.0          # fan outline, centered on the tube
 
@@ -70,10 +79,14 @@ V3 = replace(
 # V3 printed and fitted 2026-09-22, with two problems: the bracket holes were
 # too tight for the screws, and the scoop fouled a row of header pins near the
 # top edge (2 to 3 in from the side), which had to be cut away by hand.
+# V4 was never printed, so the seat (2026-10-02) went into it in place.
 V4 = replace(
     V3,
     bracket_hole_d=3.4,             # 3.0 → 3.4, clearance for M3
     scoop_top_gap=4.0,              # stop 4 short of the top-edge end, clearing the pins
+    seat_t=1.0,                     # 1 added on the flange face: 3 thick overall
+    seat_inset=1.0,                 # rebate 75 × 21 × 1 deep around the bore, for the next part;
+                                    # none along the power notch
 )
 
 
@@ -96,6 +109,14 @@ def build(p):
              holes=[Hole(x + ox, y + oy, p.bracket_hole_d) for x, y in p.bracket_holes]),
         Curve("Fan connector", o(rect(cx - s, cy - s, cx + s, cy + s))),
     ]
+    if p.seat_t:
+        # No rebate along the power notch: the strip left between the two
+        # would be too thin to print. The layer runs up to the bore there.
+        i, b = p.wall - p.seat_inset, p.wall
+        rebate = [(i, i), (nx0, i), (nx0, b), (w - i, b), (w - i, h - i), (i, h - i)]
+        parts.append(Slab("Seat", o(flange), p.flange_t, p.flange_t + p.seat_t,
+                          cutouts=[o(rebate)],
+                          holes=[Hole(x + ox, y + oy, p.bracket_hole_d) for x, y in p.bracket_holes]))
     if p.scoop_len:
         # Side section (Y, Z) of the PCB-side wall, run across the tube's full
         # width. A tab 1 up into the tube's wall fuses the two.

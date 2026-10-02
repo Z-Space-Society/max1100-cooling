@@ -118,6 +118,7 @@ model, adjusted here.
 | **Adapter tube** | Rectangular duct that goes 16 into the bay (−Z). Plain "tube" inside `card_adapter.py` means this one. |
 | **Bore** | The inside of the air path, 73 × 19, where the air goes. Runs through the adapter tube, the flange and the plenum tube at the same section, with no step. |
 | **Flange** | Plate on the shroud end plane. Sets the depth and carries the bracket holes. |
+| **Seat** | A 1 layer added on the flange face (+Z, toward the fan) that stops 1 short of the bore, except along the power notch's length on the PCB side, where it runs up to the bore (the strip left there would be too thin to print). The rebate it leaves around the bore's mouth is where the next part sits; the layer's face is the print face. Draft, V4. |
 | **Power notch** | Cutout in the flange's PCB side, top-edge end, clearing the 12V-2x6. |
 | **Scoop** | The tube's PCB-side wall carried on past the tube's end, angled toward the PCB side, so air reaches the fins on that side. Goes in by hooking it over the power plug and sliding it home. Stops short of the top-edge end to clear the header pins in the bay. |
 | **Bracket holes** | Two Ø3 holes in the flange's finger-side end. The extension bracket's screws pass through them into the card's bracket mounting holes. |
@@ -177,7 +178,7 @@ Katie's Rhino coordinates (−1.5259, −7.3609) so our files overlay hers exact
 
 | Script | Output | Status |
 |---|---|---|
-| [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes and the scoop 4 short of the top-edge end. Not yet printed |
+| [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes, the scoop 4 short of the top-edge end, and the seat (flange 3 thick overall, rebate 75 × 21 × 1 deep around the bore, none along the power notch). Not yet printed |
 | | `*-v2.*`, `*-v3.*` | Earlier versions, kept as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it |
 | [`cad/comb.py`](cad/comb.py) | `rhino/max1100-comb-v1.3dm`, `stl/max1100-comb-v1.stl` | **Comb V1** (`CURRENT`): fit test for the quad. Printed and fitted 2026-09-23 — spans the four cards, teeth into all three gaps |
 | [`cad/tail_box_gauge.py`](cad/tail_box_gauge.py) | `rhino/max1100-tail-box-gauge-v1.3dm`, `stl/max1100-tail-box-gauge-v1.stl` | **Tail box gauge V1** (`CURRENT`): fit test for the tail box. Comb V1 plus an open ring out to the case wall (172) and the front plate (165), both 1 short. Not yet printed |
