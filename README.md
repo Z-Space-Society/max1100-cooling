@@ -179,13 +179,13 @@ Katie's Rhino coordinates (−1.5259, −7.3609) so our files overlay hers exact
 | Script | Output | Status |
 |---|---|---|
 | [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes, the scoop 4 short of the top-edge end, and the seat (flange 3 thick overall, rebate 75 × 21 × 1 deep around the bore, none along the power notch). Not yet printed |
-| | `*-v2.*`, `*-v3.*` | Earlier versions, kept as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it |
+| | `rhino/archive/*-v2.3dm`, `*-v3.3dm`, `stl/archive/*-v2.stl`, `*-v3.stl` | Earlier versions, archived as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it (it writes to `rhino/` and `stl/`, not the archive) |
 | [`cad/comb.py`](cad/comb.py) | `rhino/max1100-comb-v1.3dm`, `stl/max1100-comb-v1.stl` | **Comb V1** (`CURRENT`): fit test for the quad. Printed and fitted 2026-09-23 — spans the four cards, teeth into all three gaps |
 | [`cad/tail_box_gauge.py`](cad/tail_box_gauge.py) | `rhino/max1100-tail-box-gauge-v1.3dm`, `stl/max1100-tail-box-gauge-v1.stl` | **Tail box gauge V1** (`CURRENT`): fit test for the tail box. Comb V1 plus an open ring out to the case wall (172) and the front plate (165), both 1 short. Not yet printed |
 | [`cad/tail_box_demo.py`](cad/tail_box_demo.py) | `rhino/max1100-tail-box-demo-v1.3dm`, `stl/max1100-tail-box-demo-v1.stl` | **Tail box demo V1** (`CURRENT`): an upside-down L: a 1.2 wall to the case floor against card 1, a 1.2 lid out to the case wall, teeth to the finger edge. For showing people, not for use |
 | [`cad/case_side_rib.py`](cad/case_side_rib.py) | `rhino/max1100-case-side-rib-v1.3dm`, `stl/max1100-case-side-rib-v1.stl` | **Case side rib V1** (`CURRENT`): 11.5 thick throughout. Rib 10 × 157 beside card 4, rail 10 tall to 1 short of the front wall, tab with a Ø7.5 pocket over the wall standoff and a Ø3.6 screw hole. Not yet printed |
 | [`cad/check_v1.py`](cad/check_v1.py) | (none) | Confirms the card adapter's `V1` still reproduces Katie's `.3dm` |
-| [`cad/archive/`](cad/archive/) | `stl/archive/`, `images/archive/` | Superseded: card part v2.1, box fit tests, hole coupon. Kept for the record |
+| [`cad/archive/`](cad/archive/) | `stl/archive/`, `images/archive/` | Superseded: card part v2.1, box fit tests, hole coupon. Kept for the record. `stl/archive/` and `rhino/archive/` also hold card adapter V2 and V3 |
 
 Rhino models are in [`rhino/`](rhino/): Katie's originals, plus the `.3dm`
 each script writes. Parts are built from extruded profiles in

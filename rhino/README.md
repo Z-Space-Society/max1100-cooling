@@ -16,6 +16,6 @@ view (README, "Views"), so they overlay one another exactly.
 | File | Part | Made by | Notes |
 |---|---|---|---|
 | `1100-singleshroud-v1.3dm` | Card adapter V1 | Katie, 2026-09-18 | Tube 76 × 20 × 16, flange 95 × 36 × 2, power notch 25 × 14, Ø3 bracket holes 19 apart. `cad/card_adapter.py` `V1` reproduces it (holes rounded 0.005) |
-| `max1100-card-adapter-v2.3dm` | Card adapter V2 | `cad/card_adapter.py` | Tube 22, flange 95 × 38, power notch 24 × 14, bracket holes moved 1 toward the finger edge and 1 toward the shroud side. Draft |
-| `max1100-card-adapter-v3.3dm` | Card adapter V3 | `cad/card_adapter.py` | V2 + scoop on the "Scoop" layer: PCB-side wall goes 10 deeper, angled 5 toward the PCB side. Printed and fitted 2026-09-22 |
-| `max1100-card-adapter-v4.3dm` | Card adapter V4 | `cad/card_adapter.py` | V3 fixes: bracket holes Ø3.4, scoop stops 4 short of the top-edge end (header pins). Current |
+| `max1100-card-adapter-v4.3dm` | Card adapter V4 | `cad/card_adapter.py` | V3 fixes: bracket holes Ø3.4, scoop stops 4 short of the top-edge end (header pins). Plus the seat on the "Seat" layer: 1 added on the flange face, rebate 75 × 21 × 1 deep around the bore, none along the power notch. Current |
+| `archive/max1100-card-adapter-v2.3dm` | Card adapter V2 | `cad/card_adapter.py` | Tube 22, flange 95 × 38, power notch 24 × 14, bracket holes moved 1 toward the finger edge and 1 toward the shroud side. Superseded, never printed |
+| `archive/max1100-card-adapter-v3.3dm` | Card adapter V3 | `cad/card_adapter.py` | V2 + scoop on the "Scoop" layer: PCB-side wall goes 10 deeper, angled 5 toward the PCB side. Printed and fitted 2026-09-22. Superseded |
