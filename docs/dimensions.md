@@ -75,6 +75,37 @@ bracket holes sit over them.
 | From the opening's PCB-side edge | 1 toward the PCB side, and 18 toward the shroud side (V2) |
 | Screws | Torx T8. The adapter's holes are Ø3.4; Ø3.0 was too tight to start the screws (V3 fit, 2026-09-22) |
 
+## Extension bracket
+
+Measured 2026-10-02 (tape, with photos) on a card with adapter V3 fitted, so
+"past the flange face" is from V3's flange face, 2 past the shroud end plane.
+The tape readings are to about ±1.
+
+The bracket's outer end is a **bar**: a strip lying parallel to the PCB side,
+running finger edge → top edge, with a hole at each end. These are the holes
+the flare bolts to. They must stay reachable: a stabilizer may bolt to them
+too.
+
+| | |
+|---|---|
+| Bar | 96 (finger edge → top edge) × 10 (along the card's length) |
+| Bar holes | 88 center to center. Round hole at the finger-edge end, slot at the top-edge end |
+| Bar holes, past the flange face | 40, so 42 past the shroud end plane |
+| Bar holes, in from the bar's outer edge | 3, so the bar runs 35 to 45 past the shroud end plane |
+| Round hole, from the bracket mounting holes | about 4 toward the finger edge (by eye) |
+| Bar, from the card's PCB-side face | about 1 inside it: with the card resting PCB side down there is ~1 under the bar |
+| Bar thickness | about 1 (user, 2026-10-02), so its shroud-facing face is about 2 inside the card's PCB-side face |
+| Bar hole diameter, slot size | |
+| Flange's PCB-side edge against the card's PCB-side face | Flare V1 assumes flush, which puts the bar's shroud-facing face 12 from the tube |
+| Gusset (the standing triangle at the finger-edge end) | stops 32 past the flange face, so 34 past the shroud end plane |
+
+## Salmon
+
+| | |
+|---|---|
+| Tail end → the case's front fans | **135** (user, 2026-10-02). Replaces the 125 derived from the case's 392 GPU clearance |
+| Limit for the flare plus its fan, past the tail end | 130, leaving 5 |
+
 ## Power
 
 - 12V-2x6 sits outside the opening, on its PCB side, at the top-edge end.

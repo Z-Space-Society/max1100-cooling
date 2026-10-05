@@ -5,6 +5,7 @@ PY := .venv/bin/python
 # Regenerate the current parts: rhino/max1100-*.3dm and stl/*.stl
 parts:
 	$(PY) cad/card_adapter.py
+	$(PY) cad/flare.py
 	$(PY) cad/comb.py
 	$(PY) cad/tail_box_gauge.py
 	$(PY) cad/tail_box_demo.py

@@ -709,7 +709,7 @@ flange down on the bed.
 - [ ] Which front grill positions sit in front of the card column, and how many the tail box can take while leaving one for the rest of the machine
 - [ ] Identify the row of modules in sheet-metal brackets between the front bar and the board — it sits in the tail box's footprint
 - [ ] Does the front bar's down-turned flange foul the duct? If yes, option A comes back into play
-- [ ] Design the Salmon flare
+- [ ] Design the Salmon flare. V1 drawn 2026-10-02 (`cad/flare.py`), a first draft to print and fit: one 140, 130 past the tail end with the fan on
 - [ ] Measure the bore centre's height above the chassis floor with a card installed. The 52-to-70 estimate is what decides whether the panel 120s sit on the floor or need a riser
 - [ ] Test print the card adapter with a +Z stub, to pick the print orientation
 - [ ] Decide whether the power notch gap needs sealing, and if so add a collar to the card adapter

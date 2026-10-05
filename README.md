@@ -123,7 +123,10 @@ model, adjusted here.
 | **Scoop** | The tube's PCB-side wall carried on past the tube's end, angled toward the PCB side, so air reaches the fins on that side. Goes in by hooking it over the power plug and sliding it home. Stops short of the top-edge end to clear the header pins in the bay. |
 | **Bracket holes** | Two Ø3 holes in the flange's finger-side end. The extension bracket's screws pass through them into the card's bracket mounting holes. |
 | **Fan connector** | Reference outline in the .3dm (120 × 120) for the fan-side piece. Not solid. |
-| **Flare** | Future Salmon-only piece: card adapter → fan. Size (120 or 140) undecided. |
+| **Flare** | Salmon-only piece: card adapter → fan (`cad/flare.py`). A lip sits in the adapter's seat; it bolts to the bar. Draft: V1 is for one 140, 130 past the tail end with the fan on. |
+| **Bar** | The extension bracket's outer end: a 96 × 10 strip parallel to the PCB side, 35 to 45 past the shroud end plane, a hole at each end 88 apart. The flare's bar pad lies on its shroud-facing face. |
+| **Bar pad**, **ears** | On the flare: the PCB-side wall thickened to a flat face on the bar, and the two tabs past the flare's sides that carry its holes over the bar's holes. |
+| **Fan plate** | The flare's 140 × 140 end. The fan bolts onto it face to face; the duct behind it is smaller than the fan. |
 
 ### Quad (brainstorming)
 
@@ -180,6 +183,8 @@ Katie's Rhino coordinates (−1.5259, −7.3609) so our files overlay hers exact
 |---|---|---|
 | [`cad/card_adapter.py`](cad/card_adapter.py) | `rhino/max1100-card-adapter-v4.3dm`, `stl/max1100-card-adapter-v4.stl` | **Card adapter V4** (`CURRENT`): V3 + Ø3.4 bracket holes, the scoop 4 short of the top-edge end, and the seat (flange 3 thick overall, rebate 75 × 21 × 1 deep around the bore, none along the power notch). Not yet printed |
 | | `rhino/archive/*-v2.3dm`, `*-v3.3dm`, `stl/archive/*-v2.stl`, `*-v3.stl` | Earlier versions, archived as the record. V3 was printed and fitted. `make parts` writes only `CURRENT`; to rebuild an older one, point `CURRENT` at it (it writes to `rhino/` and `stl/`, not the archive) |
+| [`cad/flare.py`](cad/flare.py) | `rhino/max1100-flare-v2.3dm`, `stl/max1100-flare-v2.stl` | **Flare V2** (`CURRENT`): draft, for one 140 fan in Salmon. Two-stage 45° taper, lip into the adapter's seat, bar pad and ears onto the extension bracket's bar. V1 + the PCB-side wall 2 thick all the way across (no step over the power notch). The bar's position through the thickness is guessed. Not yet printed |
+| | `rhino/max1100-flare-fit-test-v2.3dm`, `stl/max1100-flare-fit-test-v2.stl` | **Flare fit test V2** (`FIT_V2`): the flare cut off at the bar's far edge, shroud-side wall left straight. Print cut end down. Not yet printed. V1 of it was printed 2026-10-05: the lip didn't drop into adapter V4's rebate or line up, not yet diagnosed. V1 files are in the archive folders |
 | [`cad/comb.py`](cad/comb.py) | `rhino/max1100-comb-v1.3dm`, `stl/max1100-comb-v1.stl` | **Comb V1** (`CURRENT`): fit test for the quad. Printed and fitted 2026-09-23 — spans the four cards, teeth into all three gaps |
 | [`cad/tail_box_gauge.py`](cad/tail_box_gauge.py) | `rhino/max1100-tail-box-gauge-v1.3dm`, `stl/max1100-tail-box-gauge-v1.stl` | **Tail box gauge V1** (`CURRENT`): fit test for the tail box. Comb V1 plus an open ring out to the case wall (172) and the front plate (165), both 1 short. Not yet printed |
 | [`cad/tail_box_demo.py`](cad/tail_box_demo.py) | `rhino/max1100-tail-box-demo-v1.3dm`, `stl/max1100-tail-box-demo-v1.stl` | **Tail box demo V1** (`CURRENT`): an upside-down L: a 1.2 wall to the case floor against card 1, a 1.2 lid out to the case wall, teeth to the finger edge. For showing people, not for use |
@@ -194,7 +199,7 @@ extrusion (editable in Rhino) and as a single watertight STL.
 
 **Print settings** (match the coupons or the numbers don't transfer): PETG,
 0.2 mm layers, 4 perimeters, 20 % infill, no supports. Orientation is in each
-script's docstring — card adapter flange down, comb flat on its X-Y face,
+script's docstring — card adapter flange down, flare fan plate down, comb flat on its X-Y face,
 tail box gauge ring-face down, tail box demo lid down, case side rib wall
 side down.
 
